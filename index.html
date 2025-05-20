@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Miniatures Haven</title>
+<style>
+  /* Root CSS variables for themes */
+  :root {
+    --bg-color: #f0f0f0;
+    --text-color: #222;
+    --primary-color: #008cba;
+    --card-bg: #fff;
+    --btn-bg: #008cba;
+    --btn-hover-bg: #006f98;
+    --nav-bg: #eee;
+    --nav-active-bg: #008cba;
+    --nav-active-color: #fff;
+  }
+
+  /* Pokémon Theme */
+  .theme-pokemon {
+    --bg-color: #fef6e4;
+    --text-color: #344e41;
+    --primary-color: #ffcb05; /* Pikachu Yellow */
+    --card-bg: #fffbe6;
+    --btn-bg: #ffcb05;
+    --btn-hover-bg: #f0b500;
+    --nav-bg: #ffe066;
+    --nav-active-bg: #ffcb05;
+    --nav-active-color: #344e41;
+  }
+
+  /* Anime Theme */
+  .theme-anime {
+    --bg-color: #1a1a2e;
+    --text-color: #e0e0e0;
+    --primary-color: #16213e;
+    --card-bg: #0f3460;
+    --btn-bg: #16213e;
+    --btn-hover-bg: #53354a;
+    --nav-bg: #0f3460;
+    --nav-active-bg: #53354a;
+    --nav-active-color: #fff;
+  }
+
+  /* Chibi Theme */
+  .theme-chibi {
+    --bg-color: #fff0f6;
+    --text-color: #6f42c1;
+    --primary-color: #d6a4a4;
+    --card-bg: #ffe3ec;
+    --btn-bg: #d6a4a4;
+    --btn-hover-bg: #b57d7d;
+    --nav-bg: #f8cdda;
+    --nav-active-bg: #d6a4a4;
+    --nav-active-color: #4a2c2a;
+  }
+
+  /* Requests Theme */
+  .theme-requests {
+    --bg-color: #e6f0ff;
+    --text-color: #243665;
+    --primary-color: #4a90e2;
+    --card-bg: #c9ddff;
+    --btn-bg: #4a90e2;
+    --btn-hover-bg: #3568c5;
+    --nav-bg: #a0c4ff;
+    --nav-active-bg: #4a90e2;
+    --nav-active-color: #fff;
+  }
+
+  /* Global styles */
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.5s, color 0.5s;
+  }
+
+  h1, h2, h3, h4 {
+    margin: 0 0 0.5rem;
+  }
+
+  a, button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  /* Nav Tabs */
+  nav {
+    background-color: var(--nav-bg);
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  nav button {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    border-radius: 8px 8px 0 0;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  nav button.active {
+    background-color: var(--nav-active-bg);
+    color: var(--nav-active-color);
+  }
+
+  nav button:hover:not(.active) {
+    background-color: var(--btn-hover-bg);
+    color: var(--nav-active-color);
+  }
+
+  /* Sections */
+  .section-content {
+    max-width: 1100px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+    display: none;
+  }
+  .section-content.active {
+    display: block;
+  }
+
+  /* Welcome Section */
+  #welcome {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+  }
+  #welcome h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  #welcome button {
+    background-color: #fff;
+    color: #6e8efb;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 40px;
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  #welcome button:hover {
+    background-color: #d7d7ff;
+  }
+
+  /* Product Grid & Cards */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap: 1.25rem;
+  }
+
+  .product-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 1rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+  }
+
+  .product-image img {
+    width: 100%;
+    border-radius: 10px;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .product-info {
+    margin-top: 0.5rem;
+  }
+  .product-info h4 {
+    font-weight: 700;
+  }
+  .product-price {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  /* Buy Button */
+  .buy-button {
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: var(--btn-bg);
+    color: var(--nav-active-color);
+    border-radius: 20px;
+    font-weight: 700;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  .buy-button:hover {
+    background-color: var(--btn-hover-bg);
+  }
+
+  /* Cart Sidebar */
+  #cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 320px;
+    height: 100vh;
+    background-color: var(--card-bg);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+    padding: 1rem 1.5rem;
+    overflow-y: auto;
+    transition: right 0.4s ease;
+    z-index: 110;
+    display: flex;
+    flex-direction: column;
+  }
+  #cart-sidebar.open {
+    right: 0;
+  }
+  #cart-sidebar h3 {
+    margin-top: 0;
+  }
+  #cart-items {
+    flex-grow: 1;
+    margin: 1rem 0;
+    list-style: none;
+    padding: 0;
+  }
+  #cart-items li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  #cart-items button {
+    background: none;
+    border: none;
+    color: #cc0000;
+    font-weight: 900;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  #cart-total {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  #checkout-btn {
+    padding: 0.75rem;
+    border: none;
+    background-color: var(--btn-bg);
+    color: var(--nav-active-color);
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #checkout-btn:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+  }
+  #checkout-btn:hover:not(:disabled) {
+    background-color: var(--btn-hover-bg);
+  }
+
+  /* Cart Toggle Button */
+  #cart-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--primary-color);
+    color: var(--nav-active-color);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.6rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    z-index: 120;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+  #cart-toggle:hover {
+    background-color: var(--btn-hover-bg);
+  }
+
+  /* Custom Request Form */
+  #custom-request label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+  #custom-request input,
+  #custom-request textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-family: inherit;
+  }
+  #custom-request textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  #custom-request button {
+    background-color: var(--btn-bg);
+    color: var(--nav-active-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #custom-request button:hover {
+    background-color: var(--btn-hover-bg);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    nav button {
+      font-size: 1rem;
+      padding: 0.4rem 0.75rem;
+    }
+    #cart-sidebar {
+      width: 80vw;
+    }
+  }
+</style>
+</head>
+<body class="theme-pokemon">
+
+<!-- Welcome Frontpage -->
+<section id="welcome">
+  <h1>Miniatures Haven</h1>
+  <p>Your go-to store for awesome miniatures and collectibles</p>
+  <button id="enter-store-btn">Enter Store</button>
+</section>
+
+<!-- Navigation Tabs -->
+<nav id="main-nav" aria-label="Main navigation" hidden>
+  <button data-section="pokemon" class="active" aria-current="page">Pokémon</button>
+  <button data-section="anime">Anime Figures</button>
+  <button data-section="chibi">Chibi Animals</button>
+  <button data-section="requests">Custom Requests</button>
+</nav>
+
+<!-- Sections -->
+<section id="pokemon" class="section-content active">
+  <h2>Pokémon Collection</h2>
+  <div class="products-grid" id="pokemon-grid">
+    <!-- product cards inserted by JS -->
+  </div>
+</section>
+
+<section id="anime" class="section-content">
+  <h2>Anime Figures</h2>
+  <div class="products-grid" id="anime-grid">
+    <!-- product cards inserted by JS -->
+  </div>
+</section>
+
+<section id="chibi" class="section-content">
+  <h2>Chibi Animals Miniatures</h2>
+  <div class="products-grid" id="chibi-grid">
+    <!-- product cards inserted by JS -->
+  </div>
+</section>
+
+<section id="requests" class="section-content">
+  <h2>Custom Miniature Requests</h2>
+  <form id="custom-request" aria-label="Custom Miniature Request Form">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" required />
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required />
+    <label for="details">Request Details</label>
+    <textarea id="details" name="details" required></textarea>
+    <button type="submit">Send Request</button>
+  </form>
+</section>
+
+<!-- Cart Sidebar -->
+<aside id="cart-sidebar" aria-label="Shopping Cart">
+  <h3>Your Cart</h3>
+  <ul id="cart-items"></ul>
+  <p id="cart-total">Total: $0.00</p>
+  <button id="checkout-btn" disabled>Checkout</button>
+</aside>
+
+<!-- Cart Toggle Button -->
+<button id="cart-toggle" aria-label="Toggle Cart">🛒</button>
+
+<script>
+  // Data arrays (examples only, add real products/images)
+  window.pokemonArray = [
+    {name: 'pikachu', price: 15.99, img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'},
+    {name: 'charizard', price: 25.99, img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'},
+    {name: 'pokeball', price: 12.99, img: 'https://cdn-icons-png.flaticon.com/512/188/188987.png'},
+    {name: 'eevee', price: 18.99, img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png'},
+  ];
+
+  const animeFigures = [
+    {name: 'naruto', price: 30.00, img: 'https://static.wikia.nocookie.net/naruto/images/f/f1/Naruto_Uzumaki.png'},
+    {name: 'goku', price: 35.50, img: 'https://static.wikia.nocookie.net/dragonball/images/6/6e/Goku_Dragon_Ball_Super.png'},
+    {name: 'sailor_moon', price: 27.00, img: 'https://static.wikia.nocookie.net/sailormoon/images/7/70/Sailor_Moon.png'},
+    {name: 'luffy', price: 28.75, img: 'https://static.wikia.nocookie.net/onepiece/images/6/6e/Monkey_D_Luffy_Anime.png'},
+  ];
+
+  const chibiAnimals = [
+    {name: 'cat', price: 12.99, img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png'},
+    {name: 'rabbit', price: 14.50, img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png'},
+    {name: 'fox', price: 15.99, img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png'},
+    {name: 'bear', price: 20.00, img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png'},
+  ];
+
+  // Mapping themes to section IDs for dynamic theme switching
+  const themeMap = {
+    pokemon: 'theme-pokemon',
+    anime: 'theme-anime',
+    chibi: 'theme-chibi',
+    requests: 'theme-requests'
+  };
+
+  // Reference elements
+  const body = document.body;
+  const nav = document.getElementById('main-nav');
+  const sections = document.querySelectorAll('.section-content');
+  const navButtons = nav.querySelectorAll('button');
+  const welcomeSection = document.getElementById('welcome');
+  const enterStoreBtn = document.getElementById('enter-store-btn');
+  const cartSidebar = document.getElementById('cart-sidebar');
+  const cartToggleBtn = document.getElementById('cart-toggle');
+  const cartItemsList = document.getElementById('cart-items');
+  const cartTotalEl = document.getElementById('cart-total');
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  // Products container references
+  const pokemonGrid = document.getElementById('pokemon-grid');
+  const animeGrid = document.getElementById('anime-grid');
+  const chibiGrid = document.getElementById('chibi-grid');
+
+  // Cart data structure
+  let cart = [];
+
+  // Helper: format price
+  function formatPrice(num) {
+    return '$' + num.toFixed(2);
+  }
+
+  // Render product cards
+  function renderProducts(array, container) {
+    container.innerHTML = '';
+    array.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-image">
+          <img src="${item.img}" alt="${item.name}" />
+        </div>
+        <div class="product-info">
+          <h4>${item.name.charAt(0).toUpperCase() + item.name.slice(1)}</h4>
+          <p class="product-price">${formatPrice(item.price)}</p>
+          <button class="buy-button" data-name="${item.name}" data-price="${item.price}" aria-label="Buy ${item.name}">Buy</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Render all product grids
+  renderProducts(window.pokemonArray, pokemonGrid);
+  renderProducts(animeFigures, animeGrid);
+  renderProducts(chibiAnimals, chibiGrid);
+
+  // Nav click handler
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sectionToShow = btn.getAttribute('data-section');
+
+      // Switch active button
+      navButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Show selected section and hide others
+      sections.forEach(sec => {
+        sec.classList.toggle('active', sec.id === sectionToShow);
+      });
+
+      // Change theme on body
+      body.className = themeMap[sectionToShow];
+    });
+  });
+
+  // Cart functions
+  function updateCartUI() {
+    cartItemsList.innerHTML = '';
+    if (cart.length === 0) {
+      cartItemsList.innerHTML = '<li>Your cart is empty.</li>';
+      checkoutBtn.disabled = true;
+      cartTotalEl.textContent = 'Total: $0.00';
+      return;
+    }
+
+    cart.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name} x${item.qty} - ${formatPrice(item.price * item.qty)}`;
+      const removeBtn = document.createElement('button');
+      removeBtn.setAttribute('aria-label', `Remove ${item.name} from cart`);
+      removeBtn.textContent = '×';
+      removeBtn.onclick = () => {
+        cart.splice(index, 1);
+        updateCartUI();
+      };
+      li.appendChild(removeBtn);
+      cartItemsList.appendChild(li);
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    cartTotalEl.textContent = `Total: ${formatPrice(total)}`;
+    checkoutBtn.disabled = false;
+  }
+
+  // Add item to cart
+  function addToCart(name, price) {
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({name, price, qty: 1});
+    }
+    updateCartUI();
+    if (!cartSidebar.classList.contains('open')) {
+      cartSidebar.classList.add('open');
+    }
+  }
+
+  // Buy button listeners
+  document.body.addEventListener('click', e => {
+    if (e.target.classList.contains('buy-button')) {
+      const name = e.target.getAttribute('data-name');
+      const price = parseFloat(e.target.getAttribute('data-price'));
+      addToCart(name, price);
+    }
+  });
+
+  // Cart toggle
+  cartToggleBtn.addEventListener('click', () => {
+    cartSidebar.classList.toggle('open');
+  });
+
+  // Checkout button (placeholder)
+  checkoutBtn.addEventListener('click', () => {
+    alert('Checkout is not implemented in this demo. Thanks for your order!');
+    cart = [];
+    updateCartUI();
+    cartSidebar.classList.remove('open');
+  });
+
+  // Enter store from welcome page
+  enterStoreBtn.addEventListener('click', () => {
+    welcomeSection.style.display = 'none';
+    nav.hidden = false;
+  });
+
+  // Custom requests form submit
+  const requestForm = document.getElementById('custom-request');
+  requestForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Thank you for your request! We will contact you soon.');
+    requestForm.reset();
+  });
+</script>
+</body>
+</html>
