@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Miniatures Shop</title>
   <style>
-    /* ===== Your existing styles ===== */
+    /* === Reset and base styles === */
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -15,17 +18,11 @@
       background: #f9f9f9;
     }
 
-    main {
-      flex: 1;
-      padding: 1rem 2rem;
-      margin-left: 280px; /* space for desktop cart */
-    }
-
-    /* ===== Cart sidebar desktop ===== */
+    /* === Cart sidebar desktop === */
     #cart-sidebar {
       position: fixed;
-      left: 0;
       top: 0;
+      left: 0;
       width: 260px;
       height: 100vh;
       background: #fff;
@@ -34,24 +31,73 @@
       overflow-y: auto;
       z-index: 10;
     }
-
     #cart-sidebar h3 {
       margin-top: 0;
     }
-
     #cart-items, #cart-items-mobile {
       list-style: none;
       padding: 0;
       margin: 0 0 1rem 0;
     }
-
     #cart-items li, #cart-items-mobile li {
       margin-bottom: 0.5rem;
       border-bottom: 1px solid #eee;
       padding-bottom: 0.5rem;
     }
 
-    /* ===== Mobile styles ===== */
+    /* === Main content area with left margin for cart === */
+    main {
+      flex: 1;
+      margin-left: 260px;
+      padding: 1rem 2rem;
+    }
+
+    /* === Sections style === */
+    section {
+      margin-bottom: 2rem;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .product-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .product-info {
+      padding: 0.5rem 1rem 1rem 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-info h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .product-price {
+      color: #ff4081;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    /* === Mobile responsive === */
     @media (max-width: 768px) {
       main {
         margin-left: 0;
@@ -80,7 +126,6 @@
         align-items: center;
         justify-content: center;
       }
-
       #cart-toggle-btn #cart-count {
         position: absolute;
         top: 5px;
@@ -111,7 +156,6 @@
         border-radius: 10px;
         z-index: 9999;
       }
-
       #cart-panel-mobile.hidden {
         display: none;
       }
@@ -147,10 +191,77 @@
   </div>
 
   <main>
-    <!-- Your main content here -->
     <h1>Welcome to Miniatures Shop</h1>
-    <p>Catch 'em all, customize, and add to cart!</p>
-    <!-- Sections like Pokemon, Anime, etc go here -->
+
+    <!-- Pokemon Section -->
+    <section id="pokemon" class="section-content">
+      <h2>Pokemon Collection</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/api/placeholder/250/200" alt="Pikachu Figure" />
+          </div>
+          <div class="product-info">
+            <h4>Pikachu Figure</h4>
+            <p class="product-price">$15.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/api/placeholder/250/200" alt="Charizard Figure" />
+          </div>
+          <div class="product-info">
+            <h4>Charizard Figure</h4>
+            <p class="product-price">$25.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/api/placeholder/250/200" alt="Pokeball" />
+          </div>
+          <div class="product-info">
+            <h4>Pokeball Replica</h4>
+            <p class="product-price">$12.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/api/placeholder/250/200" alt="Eevee Figure" />
+          </div>
+          <div class="product-info">
+            <h4>Eevee Figure</h4>
+            <p class="product-price">$18.99</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Anime Section -->
+    <section id="anime" class="section-content">
+      <h2>Anime Figures</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/api/placeholder/250/200" alt="Naruto Figure" />
+          </div>
+          <div class="product-info">
+            <h4>Naruto Figure</h4>
+            <p class="product-price">$19.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/api/placeholder/250/200" alt="Sailor Moon Figure" />
+          </div>
+          <div class="product-info">
+            <h4>Sailor Moon Figure</h4>
+            <p class="product-price">$22.99</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- More sections as needed -->
   </main>
 
   <script>
@@ -160,14 +271,6 @@
     cartToggleBtn.addEventListener('click', () => {
       cartPanelMobile.classList.toggle('hidden');
     });
-
-    // Sync cart count (example)
-    function updateCartCount(count) {
-      document.getElementById('cart-count').textContent = count;
-    }
-
-    // Example: Update cart count dynamically if you add/remove items
-    // updateCartCount(3);
   </script>
 </body>
 </html>
